@@ -5,7 +5,7 @@
 	$page_title 		= "Pixel Text Generator";
 	$page_description 	= "Pixel Text Generator";
 	$page_author		= "Morgan";
-	$page_keywords		= "Heledron, Hadron, Cymaera, OpenGL, WebGL, Ascii3D";
+	$page_keywords		= "Heledron, Hadron, Cymaera, Pixel, Text, Pixelated, Font, Generator, Creator";
 
 	// page open graph settings
 	$page_og_title = $page_title;
