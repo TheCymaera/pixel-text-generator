@@ -10,6 +10,7 @@ import closeIcon from "./icons/times.svg";
 import infoIcon from "./icons/info.svg";
 import backIcon from "./icons/angle-left.svg";
 import saveIcon from "./icons/save.svg";
+import githubIcon from "./icons/github.svg";
 import { placeholderText } from "./text.js";
 
 const fonts: Font[] = [
@@ -134,6 +135,10 @@ let dialogOpen = false;
 				<button title="Save Image" class="helion-circle-button" on:click={saveImage}>
 					<Icon url="{saveIcon}" />
 				</button>
+				<div style="flex: 1;"></div>
+				<a title="GitHub" class="helion-circle-button" target="_blank" href="https://github.com/TheCymaera/pixel-text-generator">
+					<Icon url="{githubIcon}" />
+				</a>
 			</helion-intangible>
 		</helion-stack>
 	</main>
@@ -184,7 +189,7 @@ main > helion-panel {
 	padding: .5em;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
 	main {
 		grid-template-columns: unset;
 		grid-template-rows: 1fr 1fr;
