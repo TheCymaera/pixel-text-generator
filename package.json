@@ -16,7 +16,7 @@
     "rollup-plugin-scss": "^4.0.0",
     "rollup-plugin-svelte": "^7.1.0",
     "sass": "^1.57.1",
-    "svelte": "^3.55.0",
+    "svelte": "^3.55.1",
     "svelte-check": "^2.10.3",
     "svelte-preprocess": "^4.10.7",
     "tslib": "^2.4.1",
