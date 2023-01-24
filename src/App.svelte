@@ -6,12 +6,8 @@ import font3x5 from "./fonts/3x5.json";
 import font5x7 from "./fonts/5x7.json";
 import { onMount } from "svelte";
 import Icon from "./Icon.svelte";
-import closeIcon from "./icons/times.svg";
-import infoIcon from "./icons/info.svg";
-import backIcon from "./icons/angle-left.svg";
-import saveIcon from "./icons/save.svg";
-import githubIcon from "./icons/github.svg";
 import { placeholderText } from "./text.js";
+import { backIcon, closeIcon, githubIcon, infoIcon, saveIcon } from "./icons/icons.js";
 
 const fonts: Font[] = [
 	font3x3,
