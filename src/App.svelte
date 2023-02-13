@@ -74,7 +74,7 @@ $: text, selectedFont, color, scale, padding, render();
 
 let dialogOpen = false;
 </script>
-<helion-standard-view>
+<helion-standard-view class="helion-fill-parent">
 	<helion-app-bar slot="header" center-title="">
 		<helion-app-bar-left>
 			<a class="helion-app-bar-icon-button" href="/">
@@ -141,6 +141,7 @@ let dialogOpen = false;
 </helion-standard-view>
 
 <helion-panel 
+	class="helion-fill-parent"
 	style="
 		opacity: {dialogOpen ? 1 : 0};
 		pointer-events: {dialogOpen ? "all" : "none"};

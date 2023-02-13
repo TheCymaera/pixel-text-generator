@@ -15,7 +15,7 @@
 	$page_og_type = "website";
 ?>
 <!DOCTYPE html>
-<html class="helion-full-window-document">
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -41,6 +41,6 @@
 	<link rel="stylesheet" type="text/css" href="dst/main.css"/>
 	<script type="module" src="dst/main.js"></script>
 </head>
-<body class=helion-stack>
+<body>
 </body>
 </html>
