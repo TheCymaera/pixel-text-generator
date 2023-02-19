@@ -1,13 +1,12 @@
 <script lang="ts">
 import AppInfo from "./AppInfo.svelte";
-import { Font, PixelData } from "./PixelData.js";
+import { type Font, PixelData } from "./PixelData.js";
 import font3x3 from "./fonts/3x3.json";
 import font3x5 from "./fonts/3x5.json";
 import font5x7 from "./fonts/5x7.json";
 import { onMount } from "svelte";
-import Icon from "./Icon.svelte";
 import { placeholderText } from "./text.js";
-import { backIcon, closeIcon, githubIcon, infoIcon, saveIcon } from "./icons/icons.js";
+import { fa5_solid_angleLeft, fa5_solid_info, fa5_solid_save, fa5_brands_github, fa5_solid_times } from "fontawesome-svgs";
 
 const fonts: Font[] = [
 	font3x3,
@@ -77,8 +76,8 @@ let dialogOpen = false;
 <helion-standard-view class="helion-fill-parent">
 	<helion-app-bar slot="header" center-title="">
 		<helion-app-bar-left>
-			<a class="helion-app-bar-icon-button" href="/">
-				<Icon url="{backIcon}" />
+			<a class="helion-app-bar-icon-button" href="/" title="Home">
+				{@html fa5_solid_angleLeft}
 			</a>
 		</helion-app-bar-left>
 		<helion-app-bar-title>Pixel Text Generator</helion-app-bar-title>
@@ -87,17 +86,22 @@ let dialogOpen = false;
 
 	<main slot="body">
 		<helion-panel style="overflow: auto;">
-			<h3>Text</h3>
-			<textarea class="helion-outlined-text-field" bind:value={text} style="min-width: 100%; max-width: 100%; height: 10em;"></textarea>
-			
-			<h3>Font</h3>
-			<select class="helion-outlined-text-field" bind:value={selectedFont}>
-				{#each fonts as font}
-					<option value={font}>{font.title}</option>
-				{/each}
-			</select>
+			<label>
+				<h3>Text</h3>
+				<textarea class="helion-outlined-text-field" bind:value={text} style="min-width: 100%; max-width: 100%; height: 10em;"></textarea>
+			</label>
+
+			<label>
+				<h3>Font</h3>
+				<select class="helion-outlined-text-field" bind:value={selectedFont}>
+					{#each fonts as font}
+						<option value={font}>{font.title}</option>
+					{/each}
+				</select>
+			</label>
 
 			<small>{selectedFont.description}</small>
+
 
 			<h3>Display</h3>
 			<label class="icon-field-container">
@@ -108,14 +112,18 @@ let dialogOpen = false;
 			<br />
 			<br />
 
-			<div>Image Scale</div>
-			<input type="number" class="helion-outlined-text-field" bind:value={scale}>
-			<div><small>Resolution: {canvas?.width} x {canvas?.height}</small></div>
+			<label>
+				<div>Image Scale</div>
+				<input type="number" class="helion-outlined-text-field" bind:value={scale}>
+				<div><small>Resolution: {canvas?.width} x {canvas?.height}</small></div>	
+			</label>
 
 			<br />
 
-			<div>Padding</div>
-			<input type="number" class="helion-outlined-text-field" bind:value={padding}>
+			<label>
+				<div>Padding</div>
+				<input type="number" class="helion-outlined-text-field" bind:value={padding}>
+			</label>
 
 			<!--<div style="height: 300px;"></div>-->
 
@@ -126,14 +134,14 @@ let dialogOpen = false;
 			</helion-aspect-ratio>
 			<helion-intangible class="actionButtons">
 				<button title="Information" class="helion-circle-button" on:click={()=>dialogOpen = true}>
-					<Icon url="{infoIcon}" />
+					{@html fa5_solid_info}
 				</button>
 				<button title="Save Image" class="helion-circle-button" on:click={saveImage}>
-					<Icon url="{saveIcon}" />
+					{@html fa5_solid_save}
 				</button>
 				<div style="flex: 1;"></div>
 				<a title="GitHub" class="helion-circle-button" target="_blank" href="https://github.com/TheCymaera/pixel-text-generator">
-					<Icon url="{githubIcon}" />
+					{@html fa5_brands_github}
 				</a>
 			</helion-intangible>
 		</helion-stack>
@@ -162,7 +170,7 @@ let dialogOpen = false;
 		title="Close"
 		on:click={()=>dialogOpen = false}
 	>
-		<Icon url="{closeIcon}" />
+		{@html fa5_solid_times}
 	</button>
 </helion-panel>
 
@@ -175,7 +183,6 @@ let dialogOpen = false;
 	grid-gap: .5em;
 	padding: .5em;
 }
-
 
 main {
 	display: grid;

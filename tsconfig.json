@@ -9,7 +9,7 @@
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 
-    "importsNotUsedAsValues": "error",
+    "importsNotUsedAsValues": "preserve",
     "isolatedModules": false,
 
     "strict": false,
