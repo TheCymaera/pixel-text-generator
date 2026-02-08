@@ -2,7 +2,7 @@ export const placeholderText = `0123456789
 THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.
 the quick brown fox jumps over the lazy dog.
 
-heledron@gmail.com
+heledron@example.com
 
 #Hashtag
 

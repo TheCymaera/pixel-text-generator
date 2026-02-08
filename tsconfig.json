@@ -2,20 +2,19 @@
 	"include": ["src/**/*"],
 	"compilerOptions": {
 		"rootDir": "src",
-		"module": "ESNext",
+		"module": "NodeNext",
 		"target": "ESNext",
 
-		"moduleResolution": "node16",
+		"moduleResolution": "NodeNext",
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 
-    "importsNotUsedAsValues": "preserve",
-    "isolatedModules": false,
+		"isolatedModules": false,
 
-    "strict": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+		"strict": false,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
 		
 		"strictNullChecks": true,
 		"noImplicitThis": true,

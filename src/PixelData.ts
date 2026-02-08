@@ -1,12 +1,14 @@
+export type CharacterPixels = string[];
+
 export interface Font {
 	title: string;
 	description: string;
-	fallback: string[];
+	fallback: CharacterPixels;
 	lineHeight: number;
 	characterSpacing: number;
 	
 	characters: {
-		[x: string]: string[];
+		[x: string]: CharacterPixels;
 	}
 };
 
@@ -58,7 +60,7 @@ export class PixelData {
 
 	}
 
-	#printPixels(startX: number, startY: number, pixels: string[]) {
+	#printPixels(startX: number, startY: number, pixels: CharacterPixels) {
 		const pixelsWidth = Math.max(...pixels.map(i=>i.length));
 		if (this.width <= startX + pixelsWidth) this.setWidth(startX + pixelsWidth);
 		if (this.height <= startY + pixels.length) this.setHeight(startY + pixels.length);

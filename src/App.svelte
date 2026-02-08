@@ -1,12 +1,21 @@
 <script lang="ts">
 import AppInfo from "./AppInfo.svelte";
 import { type Font, PixelData } from "./PixelData.js";
-import font3x3 from "./fonts/3x3.json";
-import font3x5 from "./fonts/3x5.json";
-import font5x7 from "./fonts/5x7.json";
+import font3x3 from "./fonts/3x3.json" with { type: "json" };
+import font3x5 from "./fonts/3x5.json" with { type: "json" };
+import font5x7 from "./fonts/5x7.json" with { type: "json" };
 import { onMount } from "svelte";
-import { placeholderText } from "./text.js";
+import { placeholderText } from "./placeholderText.js";
 import { fa5_solid_angleLeft, fa5_solid_info, fa5_solid_save, fa5_brands_github, fa5_solid_times } from "fontawesome-svgs";
+import AppBar from "./lib/helion/AppBar.svelte";
+import IconButton from "./lib/helion/IconButton.svelte";
+import AspectRatio from "./lib/helion/AspectRatio.svelte";
+import Stack from "./lib/helion/Stack.svelte";
+import Intangible from "./lib/helion/Intangible.svelte";
+import MultilineTextField from "./lib/helion/MultilineTextField.svelte";
+import SelectField from "./lib/helion/SelectField.svelte";
+import NumberField from "./lib/helion/NumberField.svelte";
+import ColorField from "./lib/helion/ColorField.svelte";
 
 const fonts: Font[] = [
 	font3x3,
@@ -15,34 +24,34 @@ const fonts: Font[] = [
 ];
 
 // settings
-let text = placeholderText;
-let selectedFont = fonts[1]!;
-let color: string;
-let scale = 1;
-let padding = 2;
+let text = $state(placeholderText);
+let selectedFont = $state(fonts[1]!);
+let color = $state("#000000");
+let scale = $state(1);
+let padding = $state(2);
 
 // state
-let data = new PixelData(0, 0);
-let aspectRatio = 1;
-let canvas: HTMLCanvasElement|undefined;
-let ctx: CanvasRenderingContext2D|undefined;
+let canvas = $state.raw() as HTMLCanvasElement;
+let ctx: CanvasRenderingContext2D;
+let resolution = $state.raw({ width: 0, height: 0 });
+
 onMount(()=>{
-	ctx = canvas!.getContext("2d")!;
+	ctx = canvas.getContext("2d")!;
+
 	// make canvas pixelated
-	canvas!.style.imageRendering = "pixelated";
+	canvas.style.imageRendering = "pixelated";
 	ctx.imageSmoothingEnabled = false;
+	
 	render();
 });
 
-const render = ()=>{
-	if (!ctx || !canvas) return;
-
-	data = new PixelData(100, 100);
+function render() {
+	const data = new PixelData(100, 100);
 	data.print(text, selectedFont);
 
 	canvas.width = (data.width + padding * 2) * scale;
 	canvas.height = (data.height + padding * 2) * scale;
-	aspectRatio = canvas.width / canvas.height;
+	resolution = { width: canvas.width, height: canvas.height };
 
 	ctx.fillStyle = color;
 
@@ -60,8 +69,7 @@ const render = ()=>{
 	}
 }
 
-const saveImage = ()=>{
-	if (!canvas) return;
+function saveImage() {
 	const a = document.createElement("a");
 	a.href = canvas.toDataURL("image/png", undefined);
 	a.download = "pixel-text.png";
@@ -69,128 +77,20 @@ const saveImage = ()=>{
 }
 
 
-$: text, selectedFont, color, scale, padding, render();
+$effect(() => {
+	render();
+});
 
-let dialogOpen = false;
+let hash = $state(location.hash);
+const dialogOpen = $derived(hash === "#info");
 </script>
-<helion-standard-view class="helion-fill-parent">
-	<helion-app-bar slot="header" center-title="">
-		<helion-app-bar-left>
-			<a class="helion-app-bar-icon-button" href="/" title="Home">
-				{@html fa5_solid_angleLeft}
-			</a>
-		</helion-app-bar-left>
-		<helion-app-bar-title>Pixel Text Generator</helion-app-bar-title>
-	</helion-app-bar>
+<svelte:window on:hashchange={() => hash = location.hash} />
 
-
-	<main slot="body">
-		<helion-panel style="overflow: auto;">
-			<label>
-				<h3>Text</h3>
-				<textarea class="helion-outlined-text-field" bind:value={text} style="min-width: 100%; max-width: 100%; height: 10em;"></textarea>
-			</label>
-
-			<label>
-				<h3>Font</h3>
-				<select class="helion-outlined-text-field" bind:value={selectedFont}>
-					{#each fonts as font}
-						<option value={font}>{font.title}</option>
-					{/each}
-				</select>
-			</label>
-
-			<small>{selectedFont.description}</small>
-
-
-			<h3>Display</h3>
-			<label class="icon-field-container">
-				<input type="color" class="helion-color-picker-field" bind:value={color}>
-				<span>Colour</span>
-			</label>
-
-			<br />
-			<br />
-
-			<label>
-				<div>Image Scale</div>
-				<input type="number" class="helion-outlined-text-field" bind:value={scale}>
-				<div><small>Resolution: {canvas?.width} x {canvas?.height}</small></div>	
-			</label>
-
-			<br />
-
-			<label>
-				<div>Padding</div>
-				<input type="number" class="helion-outlined-text-field" bind:value={padding}>
-			</label>
-
-			<!--<div style="height: 300px;"></div>-->
-
-		</helion-panel>
-		<helion-stack>
-			<helion-aspect-ratio style="--aspect-ratio: {aspectRatio}; padding: 1em 4em;">
-				<canvas bind:this={canvas} class="helion-panel"></canvas>
-			</helion-aspect-ratio>
-			<helion-intangible class="actionButtons">
-				<button title="Information" class="helion-circle-button" on:click={()=>dialogOpen = true}>
-					{@html fa5_solid_info}
-				</button>
-				<button title="Save Image" class="helion-circle-button" on:click={saveImage}>
-					{@html fa5_solid_save}
-				</button>
-				<div style="flex: 1;"></div>
-				<a title="GitHub" class="helion-circle-button" target="_blank" href="https://github.com/TheCymaera/pixel-text-generator">
-					{@html fa5_brands_github}
-				</a>
-			</helion-intangible>
-		</helion-stack>
-	</main>
-</helion-standard-view>
-
-<helion-panel 
-	class="helion-fill-parent"
-	style="
-		opacity: {dialogOpen ? 1 : 0};
-		pointer-events: {dialogOpen ? "all" : "none"};
-		transition: opacity .1s;
-	">
-	<div style="height: 100%; overflow: auto;">
-		<div style="
-			margin: auto; 
-			max-width: 800px; 
-			padding: .5em 1em;
-		">
-			<AppInfo />
-		</div>
-	</div>
-	<button 
-		class="helion-circle-button" 
-		style="position: absolute; right: 0.5em; top: 0.5em;"
-		title="Close"
-		on:click={()=>dialogOpen = false}
-	>
-		{@html fa5_solid_times}
-	</button>
-</helion-panel>
 
 <style>
-.actionButtons {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	justify-content: start;
-	grid-gap: .5em;
-	padding: .5em;
-}
-
 main {
 	display: grid;
 	grid-template-columns: 300px 1fr;
-}
-
-main > helion-panel {
-	padding: .5em;
 }
 
 @media (max-width: 800px) {
@@ -208,3 +108,106 @@ main > helion-panel {
 	}
 }
 </style>
+
+<div class="absolute inset-0 grid grid-rows-[auto_1fr] z-0">
+	<AppBar centerTitle className="shadow-md z-1">
+		{#snippet left()}
+			<a href="/" class="contents">
+				<IconButton label="Back" onPress={()=>{}}>
+					{@html fa5_solid_angleLeft}
+				</IconButton>
+			</a>
+		{/snippet}
+		{#snippet title()}
+			Pixel Text Generator
+		{/snippet}
+	</AppBar>
+
+	<main>
+		<aside class="overflow-auto block p-4 bg-surfaceContainer text-onSurfaceContainer shadow-md">
+			<MultilineTextField
+				label="Text"
+				bind:value={text}
+				rows={6}
+				className="mb-4 [&_label]:font-bold"
+			/>
+
+			<SelectField
+				label="Font"
+				bind:value={selectedFont}
+				options={fonts.map(font => ({ value: font, label: font.title }))}
+				hint={selectedFont.description}
+				className="mb-4 [&_label]:font-bold"
+			/>
+
+			<ColorField
+				label="Colour"
+				bind:value={color}
+				className="mb-4"
+			/>
+
+			<NumberField
+				label="Image Scale"
+				bind:value={scale}
+				hint={`Resolution: ${resolution.width} x ${resolution.height}`}
+				className="mb-4 [&_label]:font-bold"
+			/>
+
+			<NumberField
+				label="Padding"
+				bind:value={padding}
+				className="mb-4 [&_label]:font-bold"
+			/>
+		</aside>
+
+		<Stack>
+			<div class="absolute py-4 px-16 grid">
+				<AspectRatio aspectRatio={resolution.width / resolution.height}>
+					<canvas
+						bind:this={canvas}
+						class="bg-surfaceContainer text-onSurfaceContainer"
+					></canvas>
+				</AspectRatio>
+			</div>
+
+			<Intangible className="flex flex-col items-end justify-start gap-2 p-2">
+				<IconButton variant="filled" label="Information" onPress={()=>location.hash = "#info"}>
+					{@html fa5_solid_info}
+				</IconButton>
+				<IconButton variant="filled" label="Save Image" onPress={saveImage}>
+					{@html fa5_solid_save}
+				</IconButton>
+				
+				<div class="flex-1"></div>
+
+				<a class="contents" title="GitHub" target="_blank" href="https://github.com/TheCymaera/pixel-text-generator">
+					<IconButton variant="filled" label="GitHub" onPress={()=>{}}>
+						{@html fa5_brands_github}
+					</IconButton>
+				</a>
+			</Intangible>
+		</Stack>
+	</main>
+</div>
+
+<div
+	class="absolute inset-0 bg-surface text-onSurface p-4"
+	style="
+		opacity: {dialogOpen ? 1 : 0};
+		pointer-events: {dialogOpen ? "all" : "none"};
+		transition: opacity .1s;
+	">
+	<div class="h-full overflow-auto">
+		<div class="m-auto max-w-200 px-4 py-2">
+			<AppInfo />
+		</div>
+	</div>
+	<IconButton 
+		variant="filled"
+		className="absolute right-2 top-2" 
+		label="Close"
+		onPress={()=>location.hash = ""}
+	>
+		{@html fa5_solid_times}
+	</IconButton>
+</div>
