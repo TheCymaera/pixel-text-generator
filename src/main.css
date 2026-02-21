@@ -51,6 +51,18 @@
 	accent-color: var(--color-primary-500);
 }
 
+html[data-theme="dark"] {
+	--color-surface: #282828;
+	--color-onSurface: #e7e5e2;
+
+	--color-surfaceContainer: #1e1e1e;
+
+	--color-button: #e7e5e2;
+	--color-onButton: #1a1a1a;
+
+	--color-appBar: #1a1a1a;
+}
+
 @layer base {
 	html.main-app, html.main-app body {
 		position: relative;

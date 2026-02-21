@@ -6,7 +6,7 @@ import font3x5 from "./fonts/3x5.json" with { type: "json" };
 import font5x7 from "./fonts/5x7.json" with { type: "json" };
 import { onMount } from "svelte";
 import { placeholderText } from "./placeholderText.js";
-import { fa5_solid_angleLeft, fa5_solid_info, fa5_solid_save, fa5_brands_github, fa5_solid_times } from "fontawesome-svgs";
+import { fa5_solid_angleLeft, fa5_solid_info, fa5_solid_save, fa5_brands_github, fa5_solid_times, fa5_solid_moon, fa5_solid_sun } from "fontawesome-svgs";
 import AppBar from "./lib/helion/AppBar.svelte";
 import IconButton from "./lib/helion/IconButton.svelte";
 import AspectRatio from "./lib/helion/AspectRatio.svelte";
@@ -16,6 +16,7 @@ import MultilineTextField from "./lib/helion/MultilineTextField.svelte";
 import SelectField from "./lib/helion/SelectField.svelte";
 import NumberField from "./lib/helion/NumberField.svelte";
 import ColorField from "./lib/helion/ColorField.svelte";
+import { LocalStorageEntry } from "./lib/utilities/persistence.svelte.js";
 
 const fonts: Font[] = [
 	font3x3,
@@ -35,6 +36,11 @@ let canvas = $state.raw() as HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let resolution = $state.raw({ width: 0, height: 0 });
 
+
+const systemTheme = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light";
+const theme = LocalStorageEntry.new<"light" | "dark">("com.heledron.pixel-text-generator.theme", systemTheme);
+let didChangeColor = $state(false);
+
 onMount(()=>{
 	ctx = canvas.getContext("2d")!;
 
@@ -43,6 +49,14 @@ onMount(()=>{
 	ctx.imageSmoothingEnabled = false;
 	
 	render();
+});
+
+$effect(() => {
+	document.documentElement.dataset.theme = theme.value;
+
+	if (!didChangeColor) {
+		color = theme.value === "dark" ? "#ffffff" : "#000000";
+	}
 });
 
 function render() {
@@ -121,6 +135,15 @@ main {
 		{#snippet title()}
 			Pixel Text Generator
 		{/snippet}
+		{#snippet right()}
+			{@const isDark = theme.value === "dark"}
+			<IconButton
+				label={isDark ? "Light Mode" : "Dark Mode"}
+				onPress={() => theme.value = isDark ? "light" : "dark"}
+			>
+				{@html isDark ? fa5_solid_sun : fa5_solid_moon}
+			</IconButton>
+		{/snippet}
 	</AppBar>
 
 	<main>
@@ -144,6 +167,7 @@ main {
 				label="Colour"
 				bind:value={color}
 				className="mb-4"
+				onInput={() => didChangeColor = true}
 			/>
 
 			<NumberField
