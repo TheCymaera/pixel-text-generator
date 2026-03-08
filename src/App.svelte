@@ -37,7 +37,7 @@ let ctx: CanvasRenderingContext2D;
 let resolution = $state.raw({ width: 0, height: 0 });
 
 
-const systemTheme = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light";
+const systemTheme = "light";//window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light";
 const theme = LocalStorageEntry.new<"light" | "dark">("com.heledron.pixel-text-generator.theme", systemTheme);
 let didChangeColor = $state(false);
 
