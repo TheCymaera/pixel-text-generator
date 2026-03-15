@@ -1,33 +1,26 @@
 {
-	"include": ["src/**/*"],
+	"exclude": [
+		"node_modules",
+		"dist",
+	],
 	"compilerOptions": {
-		"rootDir": "src",
-		"module": "NodeNext",
 		"target": "ESNext",
 
-		"moduleResolution": "NodeNext",
-		"allowSyntheticDefaultImports": true,
-		"resolveJsonModule": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 
-		"isolatedModules": false,
-
-		"strict": false,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		
-		"strictNullChecks": true,
-		"noImplicitThis": true,
+		"strict": true,
 		"noImplicitReturns": true,
 		"noUncheckedIndexedAccess": true,
-		"alwaysStrict": true,
 
-		"preserveConstEnums": true,
-		"removeComments": true,
-		"sourceMap": true,
+		"noEmit": true,
 
-		"skipDefaultLibCheck": true,
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 
-		"lib": ["ESNext", "DOM", "DOM.Iterable"]
+		"types": [
+			"@total-typescript/ts-reset",
+			"vite/client",
+			"svelte"
+		]
 	}
 }

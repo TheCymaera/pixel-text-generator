@@ -14,8 +14,8 @@ export interface Font {
 
 export class PixelData {
 	pixels: string[][] = [];
-	width: number;
-	height: number;
+	width!: number;
+	height!: number;
 
 	constructor(width: number, height: number) {
 		this.pixels = [];

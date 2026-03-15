@@ -1,3 +1,4 @@
+<script lang="ts"></script>
 <div class="typography">
 	<h1>Pixel Text Generator</h1>
 	<h2>Links</h2>

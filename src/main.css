@@ -1,8 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+@import "fontawesome-svgs/default.css";
 
 @theme {
-	--font-sans:  Tahoma, sans-serif;
-	--font-mono: 'Fira Code', monospace;
+	--font-sans: Tahoma, sans-serif;
+	--font-monospace: "Courier New", monospace;
 
 	--font-main: var(--font-sans);
 
